@@ -1,4 +1,3 @@
-// Wallet.java
 package com.verano.finanzasingenieriabackend.walletsmanagement.model;
 
 import jakarta.persistence.*;
@@ -45,15 +44,31 @@ public class Wallet {
         return nombre;
     }
 
+    public void setNombre(String nombre) {
+        this.nombre = nombre;
+    }
+
     public String getCliente() {
         return cliente;
+    }
+
+    public void setCliente(String cliente) {
+        this.cliente = cliente;
     }
 
     public Integer getNumeroLetrasFacturas() {
         return numeroLetrasFacturas;
     }
 
+    public void setNumeroLetrasFacturas(Integer numeroLetrasFacturas) {
+        this.numeroLetrasFacturas = numeroLetrasFacturas;
+    }
+
     public String getLetras() {
         return letras;
+    }
+
+    public void setLetras(String letras) {
+        this.letras = letras;
     }
 }

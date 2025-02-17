@@ -19,4 +19,23 @@ public class WalletService {
     public Wallet saveWallet(Wallet wallet) {
         return walletRepository.save(wallet);
     }
+
+    public Wallet getById(Long id) {
+        return walletRepository.findById(id).orElse(null);
+    }
+
+    public void deleteWalletById(Long id) {
+        walletRepository.deleteById(id);
+    }
+
+    public Wallet updateWalletById(Long id, Wallet wallet) {
+        return walletRepository.findById(id).map(existingWallet -> {
+            existingWallet
+                    .setNombre(wallet.getNombre());
+            existingWallet.setCliente(wallet.getCliente());
+            existingWallet.setNumeroLetrasFacturas(wallet.getNumeroLetrasFacturas());
+            existingWallet.setLetras(wallet.getLetras());
+            return walletRepository.save(existingWallet);
+        }).orElseThrow(() -> new IllegalArgumentException("Wallet not found"));
+    }
 }
