@@ -34,7 +34,6 @@ public class WalletService {
                     .setNombre(wallet.getNombre());
             existingWallet.setCliente(wallet.getCliente());
             existingWallet.setNumeroLetrasFacturas(wallet.getNumeroLetrasFacturas());
-            existingWallet.setLetras(wallet.getLetras());
             return walletRepository.save(existingWallet);
         }).orElseThrow(() -> new IllegalArgumentException("Wallet not found"));
     }

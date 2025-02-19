@@ -1,11 +1,8 @@
 package com.verano.finanzasingenieriabackend.walletsmanagement.model;
 
 import jakarta.persistence.*;
-import lombok.Getter;
-import lombok.Setter;
+import java.util.List;
 
-@Getter
-@Setter
 @Entity
 @Table(name = "wallets")
 public class Wallet {
@@ -14,23 +11,27 @@ public class Wallet {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(nullable = false, length = 100)
+    @Column(length = 100)
     private String nombre;
 
-    @Column(nullable = false, length = 100)
+    @Column(length = 100)
     private String cliente;
 
-    @Column(nullable = false)
     private Integer numeroLetrasFacturas;
 
-    @Column(columnDefinition = "LONGTEXT")
-    private String letras;
+    @ManyToOne
+    @JoinColumn(name = "bank_id")
+    private Bank bank;
 
-    public Wallet(String nombre, String cliente, Integer numeroLetrasFacturas, String letras) {
+    @OneToMany(mappedBy = "wallet", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Letter> letters;
+
+    public Wallet(String nombre, String cliente, Integer numeroLetrasFacturas, Bank bank, List<Letter> letters) {
         this.nombre = nombre;
         this.cliente = cliente;
         this.numeroLetrasFacturas = numeroLetrasFacturas;
-        this.letras = letras;
+        this.bank = bank;
+        this.letters = letters;
     }
 
     public Wallet() {
@@ -38,6 +39,10 @@ public class Wallet {
 
     public Long getId() {
         return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public String getNombre() {
@@ -64,11 +69,19 @@ public class Wallet {
         this.numeroLetrasFacturas = numeroLetrasFacturas;
     }
 
-    public String getLetras() {
-        return letras;
+    public Bank getBank() {
+        return bank;
     }
 
-    public void setLetras(String letras) {
-        this.letras = letras;
+    public void setBank(Bank bank) {
+        this.bank = bank;
+    }
+
+    public List<Letter> getLetters() {
+        return letters;
+    }
+
+    public void setLetters(List<Letter> letters) {
+        this.letters = letters;
     }
 }
