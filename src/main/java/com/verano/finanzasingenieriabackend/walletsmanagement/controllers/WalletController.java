@@ -4,6 +4,7 @@ package com.verano.finanzasingenieriabackend.walletsmanagement.controllers;
 import com.verano.finanzasingenieriabackend.walletsmanagement.model.Wallet;
 import com.verano.finanzasingenieriabackend.walletsmanagement.services.WalletService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -26,11 +27,9 @@ public class WalletController {
     }
 
     @PostMapping
-    public Wallet insertWallet(@RequestBody Wallet wallet) {
-        if (wallet.getCliente() == null) {
-            throw new IllegalArgumentException("Cliente must not be null");
-        }
-        return walletService.saveWallet(wallet);
+    public ResponseEntity<Wallet> insertWallet(@RequestBody Wallet wallet) {
+        Wallet savedWallet = walletService.saveWallet(wallet);
+        return ResponseEntity.ok(savedWallet);
     }
 
     @DeleteMapping("/{id}")

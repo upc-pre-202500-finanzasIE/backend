@@ -1,6 +1,7 @@
 package com.verano.finanzasingenieriabackend.walletsmanagement.services;
 
 import com.verano.finanzasingenieriabackend.walletsmanagement.model.Letter;
+import com.verano.finanzasingenieriabackend.walletsmanagement.model.Wallet;
 import com.verano.finanzasingenieriabackend.walletsmanagement.repositories.LetterRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -12,6 +13,9 @@ import java.util.stream.Collectors;
 public class LetterService {
     @Autowired
     private LetterRepository letterRepository;
+
+    @Autowired
+    private WalletService walletService;
 
     public List<Letter> getAllLetters() {
         return letterRepository.findAll();
@@ -33,7 +37,7 @@ public class LetterService {
             existingLetter.setFechaVencimiento(letter.getFechaVencimiento());
             existingLetter.setHasPlazo(letter.isHasPlazo());
             existingLetter.setPlazo(letter.getPlazo());
-            existingLetter.setWallet(letter.getWallet());
+            existingLetter.setWalletId(letter.getWalletId());
             existingLetter.setSoles(letter.isSoles());
             existingLetter.setDolares(letter.isDolares());
             return letterRepository.save(existingLetter);
@@ -46,7 +50,13 @@ public class LetterService {
 
     public List<Letter> getByTipoMoneda(String tipoMoneda) {
         return letterRepository.findAll().stream()
-                .filter(letter -> "soles".equalsIgnoreCase(tipoMoneda) ? letter.isSoles() : letter.isDolares())
+                .filter(letter -> {
+                    if (letter.getWalletId() == null) {
+                        return "soles".equalsIgnoreCase(tipoMoneda) ? letter.isSoles() : letter.isDolares();
+                    } else {
+                        return false;
+                    }
+                })
                 .collect(Collectors.toList());
     }
 }

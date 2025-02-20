@@ -28,21 +28,21 @@ public class Letter {
 
     private boolean isDolares;
 
-    @ManyToOne
-    @JoinColumn(name = "wallet_id")
-    private Wallet wallet;
+    @Column(name = "wallet_id") // Ahora es solo un atributo normal
+    private Long walletId;
 
-    public Letter(String cliente, LocalDate fechaFirma, Double valorNominal, LocalDate fechaVencimiento, boolean hasPlazo, int plazo, Wallet wallet, boolean isSoles, boolean isDolares) {
+    public Letter(String cliente, LocalDate fechaFirma, Double valorNominal, LocalDate fechaVencimiento, boolean hasPlazo, int plazo, Long walletId, boolean isSoles, boolean isDolares) {
         this.cliente = cliente;
         this.fechaFirma = fechaFirma;
         this.valorNominal = valorNominal;
         this.fechaVencimiento = fechaVencimiento;
         this.hasPlazo = hasPlazo;
         this.plazo = plazo;
-        this.wallet = wallet;
+        this.walletId = walletId;
         this.isSoles = isSoles;
         this.isDolares = isDolares;
     }
+
     public Letter(String cliente, LocalDate fechaFirma, Double valorNominal, LocalDate fechaVencimiento, boolean hasPlazo, int plazo, boolean isSoles, boolean isDolares) {
         this.cliente = cliente;
         this.fechaFirma = fechaFirma;
@@ -53,6 +53,7 @@ public class Letter {
         this.isSoles = isSoles;
         this.isDolares = isDolares;
     }
+
     public Letter() {
     }
 
@@ -128,11 +129,11 @@ public class Letter {
         this.isDolares = isDolares;
     }
 
-    public Wallet getWallet() {
-        return wallet;
+    public Long getWalletId() {
+        return walletId;
     }
 
-    public void setWallet(Wallet wallet) {
-        this.wallet = wallet;
+    public void setWalletId(Long walletId) {
+        this.walletId = walletId;
     }
 }

@@ -1,10 +1,14 @@
 package com.verano.finanzasingenieriabackend.walletsmanagement.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
+import java.time.LocalDate;
 import java.util.List;
+import java.util.Set;
 
 @Entity
 @Table(name = "wallets")
+@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 public class Wallet {
 
     @Id
@@ -14,24 +18,35 @@ public class Wallet {
     @Column(length = 100)
     private String nombre;
 
-    @Column(length = 100)
-    private String cliente;
-
-    private Integer numeroLetrasFacturas;
-
     @ManyToOne
     @JoinColumn(name = "bank_id")
     private Bank bank;
 
-    @OneToMany(mappedBy = "wallet", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<Letter> letters;
+    @ElementCollection(fetch = FetchType.EAGER)
+    @CollectionTable(name = "wallet_letter_ids", joinColumns = @JoinColumn(name = "wallet_id"))
+    @Column(name = "letter_id")
+    private Set<Long> letterIds;
 
-    public Wallet(String nombre, String cliente, Integer numeroLetrasFacturas, Bank bank, List<Letter> letters) {
+    private LocalDate fechaDescuento;
+
+    @Column(length = 50)
+    private String tipoDeCartera;
+
+    private Double valorNeto;
+
+    private Double valorEntregado;
+
+    private Double valorRecibido;
+
+    public Wallet(String nombre, Bank bank, Set<Long> letterIds, LocalDate fechaDescuento, String tipoDeCartera, Double valorNeto, Double valorEntregado, Double valorRecibido) {
         this.nombre = nombre;
-        this.cliente = cliente;
-        this.numeroLetrasFacturas = numeroLetrasFacturas;
         this.bank = bank;
-        this.letters = letters;
+        this.letterIds = letterIds;
+        this.fechaDescuento = fechaDescuento;
+        this.tipoDeCartera = tipoDeCartera;
+        this.valorNeto = valorNeto;
+        this.valorEntregado = valorEntregado;
+        this.valorRecibido = valorRecibido;
     }
 
     public Wallet() {
@@ -53,22 +68,6 @@ public class Wallet {
         this.nombre = nombre;
     }
 
-    public String getCliente() {
-        return cliente;
-    }
-
-    public void setCliente(String cliente) {
-        this.cliente = cliente;
-    }
-
-    public Integer getNumeroLetrasFacturas() {
-        return numeroLetrasFacturas;
-    }
-
-    public void setNumeroLetrasFacturas(Integer numeroLetrasFacturas) {
-        this.numeroLetrasFacturas = numeroLetrasFacturas;
-    }
-
     public Bank getBank() {
         return bank;
     }
@@ -77,11 +76,51 @@ public class Wallet {
         this.bank = bank;
     }
 
-    public List<Letter> getLetters() {
-        return letters;
+    public Set<Long> getLetterIds() {
+        return letterIds;
     }
 
-    public void setLetters(List<Letter> letters) {
-        this.letters = letters;
+    public void setLetterIds(Set<Long> letterIds) {
+        this.letterIds = letterIds;
+    }
+
+    public LocalDate getFechaDescuento() {
+        return fechaDescuento;
+    }
+
+    public void setFechaDescuento(LocalDate fechaDescuento) {
+        this.fechaDescuento = fechaDescuento;
+    }
+
+    public String getTipoDeCartera() {
+        return tipoDeCartera;
+    }
+
+    public void setTipoDeCartera(String tipoDeCartera) {
+        this.tipoDeCartera = tipoDeCartera;
+    }
+
+    public Double getValorNeto() {
+        return valorNeto;
+    }
+
+    public void setValorNeto(Double valorNeto) {
+        this.valorNeto = valorNeto;
+    }
+
+    public Double getValorEntregado() {
+        return valorEntregado;
+    }
+
+    public void setValorEntregado(Double valorEntregado) {
+        this.valorEntregado = valorEntregado;
+    }
+
+    public Double getValorRecibido() {
+        return valorRecibido;
+    }
+
+    public void setValorRecibido(Double valorRecibido) {
+        this.valorRecibido = valorRecibido;
     }
 }
