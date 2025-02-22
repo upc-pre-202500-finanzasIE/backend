@@ -28,10 +28,12 @@ public class Letter {
 
     private boolean isDolares;
 
-    @Column(name = "wallet_id") // Ahora es solo un atributo normal
+    @Column(name = "wallet_id")
     private Long walletId;
 
-    public Letter(String cliente, LocalDate fechaFirma, Double valorNominal, LocalDate fechaVencimiento, boolean hasPlazo, int plazo, Long walletId, boolean isSoles, boolean isDolares) {
+    private Double valorTasaDescontada;
+
+    public Letter(String cliente, LocalDate fechaFirma, Double valorNominal, LocalDate fechaVencimiento, boolean hasPlazo, int plazo, Long walletId, boolean isSoles, boolean isDolares, Double valorTasaDescontada) {
         this.cliente = cliente;
         this.fechaFirma = fechaFirma;
         this.valorNominal = valorNominal;
@@ -41,9 +43,10 @@ public class Letter {
         this.walletId = walletId;
         this.isSoles = isSoles;
         this.isDolares = isDolares;
+        this.valorTasaDescontada = valorTasaDescontada;
     }
 
-    public Letter(String cliente, LocalDate fechaFirma, Double valorNominal, LocalDate fechaVencimiento, boolean hasPlazo, int plazo, boolean isSoles, boolean isDolares) {
+    public Letter(String cliente, LocalDate fechaFirma, Double valorNominal, LocalDate fechaVencimiento, boolean hasPlazo, int plazo, boolean isSoles, boolean isDolares, Double valorTasaDescontada) {
         this.cliente = cliente;
         this.fechaFirma = fechaFirma;
         this.valorNominal = valorNominal;
@@ -52,6 +55,7 @@ public class Letter {
         this.plazo = plazo;
         this.isSoles = isSoles;
         this.isDolares = isDolares;
+        this.valorTasaDescontada = valorTasaDescontada;
     }
 
     public Letter() {
@@ -135,5 +139,13 @@ public class Letter {
 
     public void setWalletId(Long walletId) {
         this.walletId = walletId;
+    }
+
+    public Double getValorTasaDescontada() {
+        return valorTasaDescontada;
+    }
+
+    public void setValorTasaDescontada(Double valorTasaDescontada) {
+        this.valorTasaDescontada = valorTasaDescontada;
     }
 }

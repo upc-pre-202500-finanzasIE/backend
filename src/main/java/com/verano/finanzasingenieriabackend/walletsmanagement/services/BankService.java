@@ -28,8 +28,8 @@ public class BankService {
         return bankRepository.findById(id).map(existingBank -> {
             existingBank.setNombreBanco(bank.getNombreBanco());
             existingBank.setTasaDeInteres(bank.getTasaDeInteres());
-            existingBank.setIsNominal(bank.getIsNominal());
-            existingBank.setIsEfectiva(bank.getIsEfectiva());
+            existingBank.setNominal(bank.isNominal());
+            existingBank.setEfectiva(bank.isEfectiva());
             existingBank.setCapitalizacion(bank.getCapitalizacion());
             existingBank.setDolares(bank.isDolares());
             existingBank.setSoles(bank.isSoles());

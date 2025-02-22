@@ -1,7 +1,6 @@
 package com.verano.finanzasingenieriabackend.walletsmanagement.services;
 
 import com.verano.finanzasingenieriabackend.walletsmanagement.model.Letter;
-import com.verano.finanzasingenieriabackend.walletsmanagement.model.Wallet;
 import com.verano.finanzasingenieriabackend.walletsmanagement.repositories.LetterRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -57,6 +56,12 @@ public class LetterService {
                         return false;
                     }
                 })
+                .collect(Collectors.toList());
+    }
+
+    public List<Letter> getLettersByWalletId(Long walletId) {
+        return letterRepository.findAll().stream()
+                .filter(letter -> walletId.equals(letter.getWalletId()))
                 .collect(Collectors.toList());
     }
 }

@@ -66,4 +66,9 @@ public class LetterController {
     public List<Letter> getByTipoMoneda(@PathVariable String tipoMoneda) {
         return letterService.getByTipoMoneda(tipoMoneda);
     }
+
+    @GetMapping("/wallet/{walletId}")
+    public List<Letter> getLettersByWalletId(@PathVariable Long walletId) {
+        return letterService.getLettersByWalletId(walletId);
+    }
 }

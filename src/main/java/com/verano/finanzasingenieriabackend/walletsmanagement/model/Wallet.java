@@ -18,9 +18,8 @@ public class Wallet {
     @Column(length = 100)
     private String nombre;
 
-    @ManyToOne
     @JoinColumn(name = "bank_id")
-    private Bank bank;
+    private Long bankId;
 
     @ElementCollection(fetch = FetchType.EAGER)
     @CollectionTable(name = "wallet_letter_ids", joinColumns = @JoinColumn(name = "wallet_id"))
@@ -38,9 +37,9 @@ public class Wallet {
 
     private Double valorRecibido;
 
-    public Wallet(String nombre, Bank bank, Set<Long> letterIds, LocalDate fechaDescuento, String tipoDeCartera, Double valorNeto, Double valorEntregado, Double valorRecibido) {
+    public Wallet(String nombre, Long bankId, Set<Long> letterIds, LocalDate fechaDescuento, String tipoDeCartera, Double valorNeto, Double valorEntregado, Double valorRecibido) {
         this.nombre = nombre;
-        this.bank = bank;
+        this.bankId = bankId;
         this.letterIds = letterIds;
         this.fechaDescuento = fechaDescuento;
         this.tipoDeCartera = tipoDeCartera;
@@ -68,12 +67,12 @@ public class Wallet {
         this.nombre = nombre;
     }
 
-    public Bank getBank() {
-        return bank;
+    public Long getBank() {
+        return bankId;
     }
 
-    public void setBank(Bank bank) {
-        this.bank = bank;
+    public void setBank(Long bankId) {
+        this.bankId = bankId;
     }
 
     public Set<Long> getLetterIds() {

@@ -16,9 +16,9 @@ public class Bank {
 
     private Double tasaDeInteres;
 
-    private Double isNominal;
+    private boolean isNominal;
 
-    private Double isEfectiva;
+    private boolean isEfectiva;
 
     private String capitalizacion;
 
@@ -26,10 +26,16 @@ public class Bank {
 
     private boolean isSoles;
 
-    @OneToMany(mappedBy = "bank", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<Wallet> wallets;
+    private String gastosIniciales;
 
-    public Bank(String nombreBanco, Double tasaDeInteres, Double isNominal, Double isEfectiva, String capitalizacion, boolean isDolares, boolean isSoles) {
+    private String gastosFinales;
+
+    @ElementCollection(fetch = FetchType.EAGER)
+    @CollectionTable(name = "bank_wallet_ids", joinColumns = @JoinColumn(name = "bank_id"))
+    @Column(name = "wallet_id")
+    private List<Long> walletIds;
+
+    public Bank(String nombreBanco, Double tasaDeInteres, boolean isNominal, boolean isEfectiva, String capitalizacion, boolean isDolares, boolean isSoles, String gastosIniciales, String gastosFinales) {
         this.nombreBanco = nombreBanco;
         this.tasaDeInteres = tasaDeInteres;
         this.isNominal = isNominal;
@@ -37,6 +43,8 @@ public class Bank {
         this.capitalizacion = capitalizacion;
         this.isDolares = isDolares;
         this.isSoles = isSoles;
+        this.gastosIniciales = gastosIniciales;
+        this.gastosFinales = gastosFinales;
     }
 
     public Bank() {
@@ -66,19 +74,19 @@ public class Bank {
         this.tasaDeInteres = tasaDeInteres;
     }
 
-    public Double getIsNominal() {
+    public boolean isNominal() {
         return isNominal;
     }
 
-    public void setIsNominal(Double isNominal) {
+    public void setNominal(boolean isNominal) {
         this.isNominal = isNominal;
     }
 
-    public Double getIsEfectiva() {
+    public boolean isEfectiva() {
         return isEfectiva;
     }
 
-    public void setIsEfectiva(Double isEfectiva) {
+    public void setEfectiva(boolean isEfectiva) {
         this.isEfectiva = isEfectiva;
     }
 
@@ -106,11 +114,27 @@ public class Bank {
         isSoles = soles;
     }
 
-    public List<Wallet> getWallets() {
-        return wallets;
+    public String getGastosIniciales() {
+        return gastosIniciales;
     }
 
-    public void setWallets(List<Wallet> wallets) {
-        this.wallets = wallets;
+    public void setGastosIniciales(String gastosIniciales) {
+        this.gastosIniciales = gastosIniciales;
+    }
+
+    public String getGastosFinales() {
+        return gastosFinales;
+    }
+
+    public void setGastosFinales(String gastosFinales) {
+        this.gastosFinales = gastosFinales;
+    }
+
+    public List<Long> getWalletIds() {
+        return walletIds;
+    }
+
+    public void setWalletIds(List<Long> walletIds) {
+        this.walletIds = walletIds;
     }
 }
