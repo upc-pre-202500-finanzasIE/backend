@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class BankService {
@@ -39,5 +40,10 @@ public class BankService {
 
     public void deleteBankById(Long id) {
         bankRepository.deleteById(id);
+    }
+    public List<Bank> getBankByTipoMoneda(String tipoMoneda) {
+        return bankRepository.findAll().stream()
+                .filter(bank -> "soles".equalsIgnoreCase(tipoMoneda) ? bank.isSoles() : bank.isDolares())
+                .collect(Collectors.toList());
     }
 }

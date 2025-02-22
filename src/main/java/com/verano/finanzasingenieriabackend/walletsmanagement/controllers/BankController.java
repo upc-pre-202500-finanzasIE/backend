@@ -53,4 +53,8 @@ public class BankController {
         bankService.deleteBankById(id);
         return ResponseEntity.noContent().build();
     }
+    @GetMapping("/tipoMoneda/{tipoMoneda}")
+    public List<Bank> getBankByTipoMoneda(@PathVariable String tipoMoneda) {
+        return bankService.getBankByTipoMoneda(tipoMoneda);
+    }
 }

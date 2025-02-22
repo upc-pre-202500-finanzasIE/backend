@@ -37,8 +37,20 @@ public class WalletController {
         walletService.deleteWalletById(id);
     }
 
+    @PutMapping("/{walletId}/bank/{bankId}")
+    public ResponseEntity<Wallet> updateWalletBankId(@PathVariable Long walletId, @PathVariable Long bankId) {
+        try {
+            Wallet updatedWallet = walletService.updateWalletBankId(walletId, bankId);
+            return ResponseEntity.ok(updatedWallet);
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.notFound().build();
+        }
+    }
+
     @PutMapping("/{id}")
     public Wallet updateWalletById(@PathVariable Long id, @RequestBody Wallet wallet) {
         return walletService.updateWalletById(id, wallet);
     }
+
+
 }

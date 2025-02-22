@@ -46,7 +46,13 @@ public class WalletService {
     public void deleteWalletById(Long id) {
         walletRepository.deleteById(id);
     }
-
+    @Transactional
+    public Wallet updateWalletBankId(Long walletId, Long bankId) {
+        return walletRepository.findById(walletId).map(existingWallet -> {
+            existingWallet.setBank(bankId);
+            return walletRepository.save(existingWallet);
+        }).orElseThrow(() -> new IllegalArgumentException("Wallet not found"));
+    }
     public Wallet updateWalletById(Long id, Wallet wallet) {
         return walletRepository.findById(id).map(existingWallet -> {
             existingWallet.setNombre(wallet.getNombre());
