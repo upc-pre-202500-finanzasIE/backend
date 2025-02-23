@@ -35,7 +35,9 @@ public class Letter {
 
     private int plazoDiasDescuento;
 
-    public Letter(String cliente, LocalDate fechaFirma, Double valorNominal, LocalDate fechaVencimiento, boolean hasPlazo, int plazo, Long walletId, boolean isSoles, boolean isDolares, Double valorTasaDescontada, int plazoDiasDescuento) {
+    private Double tasaEfectivaPorDias;
+
+    public Letter(String cliente, LocalDate fechaFirma, Double valorNominal, LocalDate fechaVencimiento, boolean hasPlazo, int plazo, Long walletId, boolean isSoles, boolean isDolares, Double valorTasaDescontada, int plazoDiasDescuento, Double tasaEfectivaPorDias) {
         this.cliente = cliente;
         this.fechaFirma = fechaFirma;
         this.valorNominal = valorNominal;
@@ -47,9 +49,10 @@ public class Letter {
         this.isDolares = isDolares;
         this.valorTasaDescontada = valorTasaDescontada;
         this.plazoDiasDescuento = plazoDiasDescuento;
+        this.tasaEfectivaPorDias = tasaEfectivaPorDias;
     }
 
-    public Letter(String cliente, LocalDate fechaFirma, Double valorNominal, LocalDate fechaVencimiento, boolean hasPlazo, int plazo, boolean isSoles, boolean isDolares, Double valorTasaDescontada, int plazoDiasDescuento) {
+    public Letter(String cliente, LocalDate fechaFirma, Double valorNominal, LocalDate fechaVencimiento, boolean hasPlazo, int plazo, boolean isSoles, boolean isDolares, Double valorTasaDescontada, int plazoDiasDescuento, Double tasaEfectivaPorDias) {
         this.cliente = cliente;
         this.fechaFirma = fechaFirma;
         this.valorNominal = valorNominal;
@@ -60,6 +63,7 @@ public class Letter {
         this.isDolares = isDolares;
         this.valorTasaDescontada = valorTasaDescontada;
         this.plazoDiasDescuento = plazoDiasDescuento;
+        this.tasaEfectivaPorDias = tasaEfectivaPorDias;
     }
 
     public Letter() {
@@ -159,5 +163,13 @@ public class Letter {
 
     public void setPlazoDiasDescuento(int plazoDiasDescuento) {
         this.plazoDiasDescuento = plazoDiasDescuento;
+    }
+
+    public Double getTasaEfectivaPorDias() {
+        return tasaEfectivaPorDias;
+    }
+
+    public void setTasaEfectivaPorDias(Double tasaEfectivaPorDias) {
+        this.tasaEfectivaPorDias = tasaEfectivaPorDias;
     }
 }
