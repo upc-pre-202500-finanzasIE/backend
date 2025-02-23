@@ -33,7 +33,9 @@ public class Letter {
 
     private Double valorTasaDescontada;
 
-    public Letter(String cliente, LocalDate fechaFirma, Double valorNominal, LocalDate fechaVencimiento, boolean hasPlazo, int plazo, Long walletId, boolean isSoles, boolean isDolares, Double valorTasaDescontada) {
+    private int plazoDiasDescuento;
+
+    public Letter(String cliente, LocalDate fechaFirma, Double valorNominal, LocalDate fechaVencimiento, boolean hasPlazo, int plazo, Long walletId, boolean isSoles, boolean isDolares, Double valorTasaDescontada, int plazoDiasDescuento) {
         this.cliente = cliente;
         this.fechaFirma = fechaFirma;
         this.valorNominal = valorNominal;
@@ -44,9 +46,10 @@ public class Letter {
         this.isSoles = isSoles;
         this.isDolares = isDolares;
         this.valorTasaDescontada = valorTasaDescontada;
+        this.plazoDiasDescuento = plazoDiasDescuento;
     }
 
-    public Letter(String cliente, LocalDate fechaFirma, Double valorNominal, LocalDate fechaVencimiento, boolean hasPlazo, int plazo, boolean isSoles, boolean isDolares, Double valorTasaDescontada) {
+    public Letter(String cliente, LocalDate fechaFirma, Double valorNominal, LocalDate fechaVencimiento, boolean hasPlazo, int plazo, boolean isSoles, boolean isDolares, Double valorTasaDescontada, int plazoDiasDescuento) {
         this.cliente = cliente;
         this.fechaFirma = fechaFirma;
         this.valorNominal = valorNominal;
@@ -56,6 +59,7 @@ public class Letter {
         this.isSoles = isSoles;
         this.isDolares = isDolares;
         this.valorTasaDescontada = valorTasaDescontada;
+        this.plazoDiasDescuento = plazoDiasDescuento;
     }
 
     public Letter() {
@@ -147,5 +151,13 @@ public class Letter {
 
     public void setValorTasaDescontada(Double valorTasaDescontada) {
         this.valorTasaDescontada = valorTasaDescontada;
+    }
+
+    public int getPlazoDiasDescuento() {
+        return plazoDiasDescuento;
+    }
+
+    public void setPlazoDiasDescuento(int plazoDiasDescuento) {
+        this.plazoDiasDescuento = plazoDiasDescuento;
     }
 }
