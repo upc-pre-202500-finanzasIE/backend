@@ -35,7 +35,11 @@ public class Bank {
     @Column(name = "wallet_id")
     private List<Long> walletIds;
 
-    public Bank(String nombreBanco, Double tasaDeInteres, boolean isNominal, boolean isEfectiva, String capitalizacion, boolean isDolares, boolean isSoles, String gastosIniciales, String gastosFinales) {
+    private Double tasaEfectivaCalculadaConTrigger;
+
+    private Double periodoTasa;
+
+    public Bank(String nombreBanco, Double tasaDeInteres, boolean isNominal, boolean isEfectiva, String capitalizacion, boolean isDolares, boolean isSoles, String gastosIniciales, String gastosFinales, Double tasaEfectivaCalculadaConTrigger, Double periodoTasa) {
         this.nombreBanco = nombreBanco;
         this.tasaDeInteres = tasaDeInteres;
         this.isNominal = isNominal;
@@ -45,6 +49,8 @@ public class Bank {
         this.isSoles = isSoles;
         this.gastosIniciales = gastosIniciales;
         this.gastosFinales = gastosFinales;
+        this.tasaEfectivaCalculadaConTrigger = tasaEfectivaCalculadaConTrigger;
+        this.periodoTasa = periodoTasa;
     }
 
     public Bank() {
@@ -136,5 +142,21 @@ public class Bank {
 
     public void setWalletIds(List<Long> walletIds) {
         this.walletIds = walletIds;
+    }
+
+    public Double getTasaEfectivaCalculadaConTrigger() {
+        return tasaEfectivaCalculadaConTrigger;
+    }
+
+    public void setTasaEfectivaCalculadaConTrigger(Double tasaEfectivaCalculadaConTrigger) {
+        this.tasaEfectivaCalculadaConTrigger = tasaEfectivaCalculadaConTrigger;
+    }
+
+    public Double getPeriodoTasa() {
+        return periodoTasa;
+    }
+
+    public void setPeriodoTasa(Double periodoTasa) {
+        this.periodoTasa = periodoTasa;
     }
 }

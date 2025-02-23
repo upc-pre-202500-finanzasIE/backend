@@ -22,6 +22,7 @@ public class BankService {
     }
 
     public Bank insertBank(Bank bank) {
+        System.out.println("Inserting bank: " + bank);
         return bankRepository.save(bank);
     }
 
