@@ -36,8 +36,9 @@ public class Wallet {
     private Double valorEntregado;
 
     private Double valorRecibido;
+    private double valorNominalConjunto;
 
-    public Wallet(String nombre, Long bankId, Set<Long> letterIds, LocalDate fechaDescuento, String tipoDeCartera, Double valorNeto, Double valorEntregado, Double valorRecibido) {
+    public Wallet(String nombre, Long bankId, Set<Long> letterIds, LocalDate fechaDescuento, String tipoDeCartera, Double valorNeto, Double valorEntregado, Double valorRecibido, Double valorNominalConjunto) {
         this.nombre = nombre;
         this.bankId = bankId;
         this.letterIds = letterIds;
@@ -121,5 +122,12 @@ public class Wallet {
 
     public void setValorRecibido(Double valorRecibido) {
         this.valorRecibido = valorRecibido;
+    }
+
+    public void setValorNominalConjunto(double valorNominalConjunto) {
+        this.valorNominalConjunto = valorNominalConjunto;
+    }
+    public double getValorNominalConjunto() {
+        return valorNominalConjunto;
     }
 }

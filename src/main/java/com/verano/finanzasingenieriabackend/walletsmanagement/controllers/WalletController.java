@@ -52,5 +52,15 @@ public class WalletController {
         return walletService.updateWalletById(id, wallet);
     }
 
-
+    @PutMapping("/{walletId}/update-valor-neto")
+    public ResponseEntity<Void> updateWalletValorNeto(@PathVariable Long walletId,
+                                                      @RequestParam(required = false) Double gastosIniciales,
+                                                      @RequestParam(required = false) Double gastosFinales) {
+        try {
+            walletService.updateWalletValorNeto(walletId, gastosIniciales, gastosFinales);
+            return ResponseEntity.ok().build();
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.notFound().build();
+        }
+    }
 }

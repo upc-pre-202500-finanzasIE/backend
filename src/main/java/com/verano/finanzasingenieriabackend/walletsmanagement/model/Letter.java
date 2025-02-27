@@ -24,6 +24,8 @@ public class Letter {
 
     private int plazo;
 
+    private String estado = "Pendiente"; // Default value
+
     private boolean isSoles;
 
     private boolean isDolares;
@@ -37,7 +39,7 @@ public class Letter {
 
     private Double tasaEfectivaPorDias;
 
-    public Letter(String cliente, LocalDate fechaFirma, Double valorNominal, LocalDate fechaVencimiento, boolean hasPlazo, int plazo, Long walletId, boolean isSoles, boolean isDolares, Double valorTasaDescontada, int plazoDiasDescuento, Double tasaEfectivaPorDias) {
+    public Letter(String cliente, LocalDate fechaFirma, Double valorNominal, LocalDate fechaVencimiento, boolean hasPlazo, int plazo, Long walletId, boolean isSoles, boolean isDolares, Double valorTasaDescontada, int plazoDiasDescuento, Double tasaEfectivaPorDias, String estado) {
         this.cliente = cliente;
         this.fechaFirma = fechaFirma;
         this.valorNominal = valorNominal;
@@ -50,9 +52,10 @@ public class Letter {
         this.valorTasaDescontada = valorTasaDescontada;
         this.plazoDiasDescuento = plazoDiasDescuento;
         this.tasaEfectivaPorDias = tasaEfectivaPorDias;
+        this.estado = estado;
     }
 
-    public Letter(String cliente, LocalDate fechaFirma, Double valorNominal, LocalDate fechaVencimiento, boolean hasPlazo, int plazo, boolean isSoles, boolean isDolares, Double valorTasaDescontada, int plazoDiasDescuento, Double tasaEfectivaPorDias) {
+    public Letter(String cliente, LocalDate fechaFirma, Double valorNominal, LocalDate fechaVencimiento, boolean hasPlazo, int plazo, boolean isSoles, boolean isDolares, Double valorTasaDescontada, int plazoDiasDescuento, Double tasaEfectivaPorDias, String estado) {
         this.cliente = cliente;
         this.fechaFirma = fechaFirma;
         this.valorNominal = valorNominal;
@@ -64,6 +67,7 @@ public class Letter {
         this.valorTasaDescontada = valorTasaDescontada;
         this.plazoDiasDescuento = plazoDiasDescuento;
         this.tasaEfectivaPorDias = tasaEfectivaPorDias;
+        this.estado = estado;
     }
 
     public Letter() {
@@ -171,5 +175,13 @@ public class Letter {
 
     public void setTasaEfectivaPorDias(Double tasaEfectivaPorDias) {
         this.tasaEfectivaPorDias = tasaEfectivaPorDias;
+    }
+
+    public String getEstado() {
+        return estado;
+    }
+
+    public void setEstado(String estado) {
+        this.estado = estado;
     }
 }
