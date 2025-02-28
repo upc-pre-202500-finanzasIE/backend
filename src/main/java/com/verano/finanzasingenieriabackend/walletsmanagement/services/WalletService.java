@@ -12,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.Period;
+import java.time.temporal.ChronoUnit;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
@@ -63,13 +64,17 @@ public class WalletService {
             List<Letter> relatedLetters = letterRepository.findByWalletId(walletId);
             for (Letter letter : relatedLetters) {
                 if (existingWallet.getFechaDescuento() != null) {
-                    int plazoDiasDescuento = Period.between(existingWallet.getFechaDescuento(), letter.getFechaVencimiento()).getDays();
-                    letter.setPlazoDiasDescuento(plazoDiasDescuento);
+                    long plazoDiasDescuento = ChronoUnit.DAYS.between(existingWallet.getFechaDescuento(), letter.getFechaVencimiento());
+                    letter.setPlazoDiasDescuento((int) plazoDiasDescuento);
 
-                    double tasaEfectivaPorDias = calculateTasaEfectivaPorDias(letter, bank.getTasaEfectivaCalculadaConTrigger());
-                    double valorTasaDescontada = calculateValorTasaDescontada(letter, tasaEfectivaPorDias);
+                    double tasaEfectivaPorDias = calculateTasaEfectivaDiasPlazo(letter, bankId, bank.getTasaEfectivaCalculadaConTrigger());
+                    double tasaDescontadaLetra =  calcularTasaDescontada(letter, tasaEfectivaPorDias);
+                    double valorTasaDescontada = calculateValorTasaDescontada(letter, tasaDescontadaLetra);
+                    double tasaEfectivaDiaria = calculateTasaEfectivaDiaria(tasaEfectivaPorDias, bank.getPeriodoTasa());
                     letter.setTasaEfectivaPorDias(tasaEfectivaPorDias);
                     letter.setValorTasaDescontada(valorTasaDescontada);
+                    letter.setTasaDescontada(tasaDescontadaLetra); // Set new field
+                    letter.setTasaEfectivaDiaria(tasaEfectivaDiaria);
                 }
                 letter.setEstado("En descuento");
                 letterRepository.save(letter);
@@ -79,12 +84,26 @@ public class WalletService {
         }).orElseThrow(() -> new IllegalArgumentException("Wallet not found"));
     }
 
-    private double calculateTasaEfectivaPorDias(Letter letter, double tasaEfectivaCalculadaConTrigger) {
-        return Math.pow(1 + tasaEfectivaCalculadaConTrigger, letter.getPlazoDiasDescuento()) - 1;
+    private double calculateTasaEfectivaDiasPlazo(Letter letter, Long bankId, double tasaEfectivaCalculadaConTrigger) {
+        Bank bank = bankRepository.findById(bankId)
+                .orElseThrow(() -> new IllegalArgumentException("Bank not found"));
+        double periodoTasa = bank.getPeriodoTasa();
+
+        double tasaUsar = Math.pow(tasaEfectivaCalculadaConTrigger + 1, periodoTasa) - 1;
+
+        double result = Math.pow(1 + tasaUsar, letter.getPlazoDiasDescuento() / (double) periodoTasa) - 1;
+
+        return result;
+    }
+    private double calcularTasaDescontada(Letter letter, double tasaEfectivaPorDias) {
+        return tasaEfectivaPorDias/(1+tasaEfectivaPorDias);
+    }
+    private double calculateTasaEfectivaDiaria(double tasaEfectivaPorDias, double periodoTasa) {
+        return Math.pow(1 + tasaEfectivaPorDias, 1 / periodoTasa) - 1;
     }
 
-    private double calculateValorTasaDescontada(Letter letter, double tasaEfectivaPorDias) {
-        return letter.getValorNominal() * (1 - (tasaEfectivaPorDias / (1 + tasaEfectivaPorDias)));
+    private double calculateValorTasaDescontada(Letter letter, double tasaDescontadaLetra) {
+        return letter.getValorNominal() * (1 - tasaDescontadaLetra);
     }
 
 
