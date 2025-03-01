@@ -1,6 +1,5 @@
 package com.verano.finanzasingenieriabackend.walletsmanagement.model;
 
-
 import jakarta.persistence.*;
 import java.time.LocalDate;
 
@@ -44,7 +43,9 @@ public class Letter {
 
     private Double tasaEfectivaDiaria; // New field
 
-    public Letter(String cliente, LocalDate fechaFirma, Double valorNominal, LocalDate fechaVencimiento, boolean hasPlazo, int plazo, Long walletId, boolean isSoles, boolean isDolares, Double valorTasaDescontada, int plazoDiasDescuento, Double tasaEfectivaPorDias, Double tasaDescontada, Double tasaEfectivaDiaria, String estado) {
+    private Double tceaLetra; // New field
+
+    public Letter(String cliente, LocalDate fechaFirma, Double valorNominal, LocalDate fechaVencimiento, boolean hasPlazo, int plazo, Long walletId, boolean isSoles, boolean isDolares, Double valorTasaDescontada, int plazoDiasDescuento, Double tasaEfectivaPorDias, Double tasaDescontada, Double tasaEfectivaDiaria, Double tceaLetra, String estado) {
         this.cliente = cliente;
         this.fechaFirma = fechaFirma;
         this.valorNominal = valorNominal;
@@ -59,10 +60,11 @@ public class Letter {
         this.tasaEfectivaPorDias = tasaEfectivaPorDias;
         this.tasaDescontada = tasaDescontada;
         this.tasaEfectivaDiaria = tasaEfectivaDiaria;
+        this.tceaLetra = tceaLetra;
         this.estado = estado;
     }
 
-    public Letter(String cliente, LocalDate fechaFirma, Double valorNominal, LocalDate fechaVencimiento, boolean hasPlazo, int plazo, boolean isSoles, boolean isDolares, Double valorTasaDescontada, int plazoDiasDescuento, Double tasaEfectivaPorDias, Double tasaDescontada, Double tasaEfectivaDiaria, String estado) {
+    public Letter(String cliente, LocalDate fechaFirma, Double valorNominal, LocalDate fechaVencimiento, boolean hasPlazo, int plazo, boolean isSoles, boolean isDolares, Double valorTasaDescontada, int plazoDiasDescuento, Double tasaEfectivaPorDias, Double tasaDescontada, Double tasaEfectivaDiaria, Double tceaLetra, String estado) {
         this.cliente = cliente;
         this.fechaFirma = fechaFirma;
         this.valorNominal = valorNominal;
@@ -76,9 +78,9 @@ public class Letter {
         this.tasaEfectivaPorDias = tasaEfectivaPorDias;
         this.tasaDescontada = tasaDescontada;
         this.tasaEfectivaDiaria = tasaEfectivaDiaria;
+        this.tceaLetra = tceaLetra;
         this.estado = estado;
     }
-
 
     public Letter() {
     }
@@ -134,21 +136,7 @@ public class Letter {
     public int getPlazo() {
         return plazo;
     }
-    public Double getTasaDescontada() {
-        return tasaDescontada;
-    }
 
-    public void setTasaDescontada(Double tasaDescontada) {
-        this.tasaDescontada = tasaDescontada;
-    }
-
-    public Double getTasaEfectivaDiaria() {
-        return tasaEfectivaDiaria;
-    }
-
-    public void setTasaEfectivaDiaria(Double tasaEfectivaDiaria) {
-        this.tasaEfectivaDiaria = tasaEfectivaDiaria;
-    }
     public void setPlazo(int plazo) {
         this.plazo = plazo;
     }
@@ -207,5 +195,29 @@ public class Letter {
 
     public void setEstado(String estado) {
         this.estado = estado;
+    }
+
+    public Double getTasaDescontada() {
+        return tasaDescontada;
+    }
+
+    public void setTasaDescontada(Double tasaDescontada) {
+        this.tasaDescontada = tasaDescontada;
+    }
+
+    public Double getTasaEfectivaDiaria() {
+        return tasaEfectivaDiaria;
+    }
+
+    public void setTasaEfectivaDiaria(Double tasaEfectivaDiaria) {
+        this.tasaEfectivaDiaria = tasaEfectivaDiaria;
+    }
+
+    public Double getTceaLetra() {
+        return tceaLetra;
+    }
+
+    public void setTceaLetra(Double tceaLetra) {
+        this.tceaLetra = tceaLetra;
     }
 }

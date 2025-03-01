@@ -10,7 +10,7 @@ import com.verano.finanzasingenieriabackend.walletsmanagement.repositories.Lette
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
+import org.json.JSONObject;
 import java.time.Period;
 import java.time.temporal.ChronoUnit;
 import java.util.List;
@@ -73,7 +73,7 @@ public class WalletService {
                     double tasaEfectivaDiaria = calculateTasaEfectivaDiaria(tasaEfectivaPorDias, bank.getPeriodoTasa());
                     letter.setTasaEfectivaPorDias(tasaEfectivaPorDias);
                     letter.setValorTasaDescontada(valorTasaDescontada);
-                    letter.setTasaDescontada(tasaDescontadaLetra); // Set new field
+                    letter.setTasaDescontada(tasaDescontadaLetra);
                     letter.setTasaEfectivaDiaria(tasaEfectivaDiaria);
                 }
                 letter.setEstado("En descuento");
@@ -122,45 +122,62 @@ public class WalletService {
     }
 
     @org.springframework.transaction.annotation.Transactional
-    public void updateWalletValorNeto(Long walletId, Double gastosIniciales, Double gastosFinales) {
-        System.out.println("Starting updateWalletValorNeto with walletId: " + walletId + ", gastosIniciales: " + gastosIniciales + ", gastosFinales: " + gastosFinales);
+    public void updateWalletValorNeto(Long walletId, Double gastosFinales) {
 
+        System.out.println("Ejecutando");
         double totalValorNeto = letterRepository.findAll().stream()
                 .filter(letter -> walletId.equals(letter.getWalletId()))
                 .mapToDouble(Letter::getValorTasaDescontada)
                 .sum();
-        System.out.println("Total Valor Neto: " + totalValorNeto);
 
         double totalValorNominalConjunto = letterRepository.findAll().stream()
                 .filter(letter -> walletId.equals(letter.getWalletId()))
                 .mapToDouble(Letter::getValorNominal)
                 .sum();
-        System.out.println("Total Valor Nominal Conjunto: " + totalValorNominalConjunto);
 
         Optional<Wallet> optionalWallet = walletRepository.findById(walletId);
         if (optionalWallet.isPresent()) {
             Wallet existingWallet = optionalWallet.get();
-            System.out.println("Existing Wallet found: " + existingWallet);
 
+            Bank bank = bankRepository.findById(existingWallet.getBank())
+                    .orElseThrow(() -> new IllegalArgumentException("Bank not found"));
             existingWallet.setValorNeto(totalValorNeto);
             existingWallet.setValorNominalConjunto(totalValorNominalConjunto);
-            if (gastosIniciales != null) {
-                existingWallet.setValorRecibido(totalValorNeto - gastosIniciales);
-                System.out.println("Updated Valor Recibido: " + existingWallet.getValorRecibido());
-            }
-            if (gastosFinales != null) {
-                existingWallet.setValorEntregado(totalValorNominalConjunto - gastosFinales);
-                System.out.println("Updated Valor Entregado: " + existingWallet.getValorEntregado());
-            }
-            Wallet updatedWallet = walletRepository.save(existingWallet);
-            System.out.println("Updated Wallet saved: " + updatedWallet);
+            String gastosInicialesJson = bank.getGastosIniciales();
+if(gastosInicialesJson != null) {
+    JSONObject gastosInicialesObj = new JSONObject(gastosInicialesJson);
+    double seguroInicial = gastosInicialesObj.getDouble("seguroInicial");
+    double comisionPagoInicial = gastosInicialesObj.getDouble("comisionPagoInicial");
+    double interesesLetrasFacturas = gastosInicialesObj.getDouble("interesesLetrasFacturas");
 
-            // Update the status of related letters
+    double gastosIniciales = -seguroInicial / 100 * totalValorNominalConjunto - comisionPagoInicial - interesesLetrasFacturas;
+
+    existingWallet.setValorRecibido(totalValorNeto + gastosIniciales);
+}
+else {
+    existingWallet.setValorRecibido(totalValorNeto);
+}                String gastosFinalesJson = bank.getGastosFinales();
+
+            if (gastosFinalesJson != null) {
+                JSONObject gastosFinalesObj = new JSONObject(gastosFinalesJson);
+                double comisionSeguro = gastosFinalesObj.getDouble("comisionSeguro");
+                double comisionTipoMoneda = gastosFinalesObj.getDouble("comisionTipoMoneda");
+                double comisionFija = gastosFinalesObj.getDouble("comisionFija");
+
+                gastosFinales =  comisionFija / 100 * totalValorNominalConjunto + comisionSeguro + comisionTipoMoneda ;
+
+                existingWallet.setValorEntregado(totalValorNominalConjunto + gastosFinales);
+            }
+            else {
+                existingWallet.setValorEntregado(totalValorNominalConjunto);
+            }
+
+            Wallet updatedWallet = walletRepository.save(existingWallet);
+
             List<Letter> relatedLetters = letterRepository.findByWalletId(walletId);
             for (Letter letter : relatedLetters) {
                 letter.setEstado("Cancelado");
                 letterRepository.save(letter);
-                System.out.println("Updated Letter: " + letter);
             }
         } else {
             throw new IllegalArgumentException("Wallet not found");
