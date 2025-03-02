@@ -1,41 +1,35 @@
 package com.verano.finanzasingenieriabackend.authentication;
 
-import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/auth")
-@RequiredArgsConstructor
 public class UserController {
 
-    private final UserRepository userRepository;
-    private final UserAuthenticationProvider userAuthenticationProvider;
-    private final PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
-
-    @PostMapping("/register")
-    public ResponseEntity<String> register(@RequestBody UserDto userDto) {
-        if (userRepository.existsByLogin(userDto.getLogin())) {
-            return ResponseEntity.badRequest().body("User already exists");
-        }
-        User user = new User();
-        user.setLogin(userDto.getLogin());
-        user.setPassword(passwordEncoder.encode(userDto.getPassword()));
-        userRepository.save(user);
-        return ResponseEntity.ok("User registered successfully");
-    }
+    @Autowired
+    private UserService userService;
 
     @PostMapping("/login")
-    public ResponseEntity<String> login(@RequestBody UserDto userDto) {
-        User user = userRepository.findByLogin(userDto.getLogin())
-                .orElseThrow(() -> new IllegalArgumentException("Invalid login"));
-        if (passwordEncoder.matches(userDto.getPassword(), user.getPassword())) {
-            String token = userAuthenticationProvider.createToken(userDto);
-            return ResponseEntity.ok(token);
+    public ResponseEntity<String> login(@RequestParam String login, @RequestParam String password) {
+        Optional<User> user = userService.login(login, password);
+        if (user.isPresent()) {
+            return ResponseEntity.ok(user.get().getToken());
         } else {
-            return ResponseEntity.badRequest().body("Invalid password");
+            return ResponseEntity.status(401).body("Invalid credentials");
+        }
+    }
+
+    @PostMapping("/register")
+    public ResponseEntity<User> register(@RequestParam String login, @RequestParam String password) {
+        try {
+            User user = userService.register(login, password);
+            return ResponseEntity.ok(user);
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.status(400).body(null);
         }
     }
 }

@@ -15,6 +15,7 @@ public class User {
     private Long id;
     private String login;
     private String password;
+    private String token;
 
     public void setLogin(String login) {
         this.login = login;
@@ -27,5 +28,11 @@ public class User {
     }
     public String getPassword() {
         return password;
+    }
+    public String getToken() {
+        return token;
+    }
+    public void setToken(String token) {
+        this.token = token;
     }
 }
