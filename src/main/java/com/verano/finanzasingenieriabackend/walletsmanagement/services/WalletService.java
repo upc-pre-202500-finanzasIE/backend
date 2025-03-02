@@ -84,6 +84,9 @@ public class WalletService {
         }).orElseThrow(() -> new IllegalArgumentException("Wallet not found"));
     }
 
+    private double calculataTceaLetra(double tasaEfectivaDiaria, int plazoDiasDescuento) {
+        return Math.pow(1 + tasaEfectivaDiaria, 360) - 1;
+    }
     private double calculateTasaEfectivaDiasPlazo(Letter letter, Long bankId, double tasaEfectivaCalculadaConTrigger) {
         Bank bank = bankRepository.findById(bankId)
                 .orElseThrow(() -> new IllegalArgumentException("Bank not found"));
