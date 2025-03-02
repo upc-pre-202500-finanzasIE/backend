@@ -1,4 +1,4 @@
-package com.verano.finanzasingenieriabackend.authentication;
+package com.verano.finanzasingenieriabackend.walletsmanagement.model;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;

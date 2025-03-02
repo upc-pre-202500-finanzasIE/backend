@@ -1,5 +1,6 @@
-package com.verano.finanzasingenieriabackend.authentication;
+package com.verano.finanzasingenieriabackend.walletsmanagement.repositories;
 
+import com.verano.finanzasingenieriabackend.walletsmanagement.model.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

@@ -1,17 +1,21 @@
-package com.verano.finanzasingenieriabackend.authentication;
+package com.verano.finanzasingenieriabackend.walletsmanagement.controllers;
 
+import com.verano.finanzasingenieriabackend.walletsmanagement.model.User;
+import com.verano.finanzasingenieriabackend.walletsmanagement.services.UserServiceHelper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.RestController;
 
 import java.util.Optional;
 
 @RestController
-@RequestMapping("/api/auth")
-public class UserController {
+@RequestMapping("/api/v1/auth")
+@CrossOrigin(origins = "http://localhost:5173")
+public class SoyNuevoControlador {
 
     @Autowired
-    private UserService userService;
+    private UserServiceHelper userService;
 
     @PostMapping("/login")
     public ResponseEntity<String> login(@RequestParam String login, @RequestParam String password) {
