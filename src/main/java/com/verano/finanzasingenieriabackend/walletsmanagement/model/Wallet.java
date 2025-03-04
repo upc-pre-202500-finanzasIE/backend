@@ -37,6 +37,7 @@ public class Wallet {
 
     private Double valorRecibido;
     private double valorNominalConjunto;
+    private Double tceaConjunta;;
 
     public Wallet(String nombre, Long bankId, Set<Long> letterIds, LocalDate fechaDescuento, String tipoDeCartera, Double valorNeto, Double valorEntregado, Double valorRecibido, Double valorNominalConjunto) {
         this.nombre = nombre;
@@ -129,5 +130,13 @@ public class Wallet {
     }
     public double getValorNominalConjunto() {
         return valorNominalConjunto;
+    }
+
+    public Double getTceaConjunta() {
+        return tceaConjunta;
+    }
+
+    public void setTceaConjunta(Double tceaConjunta) {
+        this.tceaConjunta = tceaConjunta;
     }
 }

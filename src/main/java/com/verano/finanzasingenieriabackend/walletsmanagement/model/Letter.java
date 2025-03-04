@@ -39,11 +39,14 @@ public class Letter {
 
     private Double tasaEfectivaPorDias;
 
-    private Double tasaDescontada; // New field
+    private Double tasaDescontada;
 
-    private Double tasaEfectivaDiaria; // New field
+    private Double tasaEfectivaDiaria;
 
-    private Double tceaLetra; // New field
+    private Double tceaLetra;
+    private Double valorNetoGastosIniciales;
+    private Double pesoLetra;
+    private Double valorEntregadoConGastosFinales;
 
     public Letter(String cliente, LocalDate fechaFirma, Double valorNominal, LocalDate fechaVencimiento, boolean hasPlazo, int plazo, Long walletId, boolean isSoles, boolean isDolares, Double valorTasaDescontada, int plazoDiasDescuento, Double tasaEfectivaPorDias, Double tasaDescontada, Double tasaEfectivaDiaria, Double tceaLetra, String estado) {
         this.cliente = cliente;
@@ -219,5 +222,29 @@ public class Letter {
 
     public void setTceaLetra(Double tceaLetra) {
         this.tceaLetra = tceaLetra;
+    }
+
+    public Double getValorNetoGastosIniciales() {
+        return valorNetoGastosIniciales;
+    }
+
+    public void setValorNetoGastosIniciales(Double valorTasaDescontadaConGastosIniciales) {
+        this.valorNetoGastosIniciales = valorTasaDescontadaConGastosIniciales;
+    }
+
+    public Double getPesoLetra() {
+        return pesoLetra;
+    }
+
+    public void setPesoLetra(double pesoLetra) {
+        this.pesoLetra = pesoLetra;
+    }
+
+    public Double getValorEntregadoConGastosFinales() {
+        return valorEntregadoConGastosFinales;
+    }
+
+    public void setValorEntregadoConGastosFinales(Double valorEntregadoConGastosFinales) {
+        this.valorEntregadoConGastosFinales = valorEntregadoConGastosFinales;
     }
 }
